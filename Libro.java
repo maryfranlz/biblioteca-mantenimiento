@@ -13,7 +13,7 @@ public class Libro
     private CategoriaLibro categoria;
     private boolean prestado;
     private double precio;
-    private int stock;
+    private boolean vendido;
 
     /**
      * Crea un libro disponible.
@@ -23,7 +23,7 @@ public class Libro
      * @param isbn      identificador único del libro
      * @param categoria categoría a la que pertenece
      */
-    public Libro(String titulo, String autor, String isbn, CategoriaLibro categoria, double precio, int stock)
+    public Libro(String titulo, String autor, String isbn, CategoriaLibro categoria, double precio)
     {
         this.titulo = titulo;
         this.autor = autor;
@@ -31,7 +31,7 @@ public class Libro
         this.categoria = categoria;
         this.prestado = false;
         this.precio = precio;
-        this.stock = stock;
+        this.vendido = false;
     }
 
     public String getTitulo()
@@ -67,9 +67,9 @@ public class Libro
         return precio;
     }
 
-    public int getStock()
+    public int isVendido()
     {
-        return stock;
+        return vendido;
     }
 
     public void setTitulo(String titulo)
@@ -95,11 +95,6 @@ public class Libro
     public void setPrecio(double precio)
     {
         this.precio = precio;
-    }
-
-    public void setStock(int stock)
-    {
-        this.stock = stock;
     }
 
     /**

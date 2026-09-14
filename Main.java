@@ -13,8 +13,7 @@ public class Main
             "Miguel de Cervantes",
             "9788424922498",
             CategoriaLibro.FICCION,
-            300.00,
-            2
+            300.00
         ));
 
         biblioteca.agregarLibro(new Libro(
@@ -22,8 +21,7 @@ public class Main
             "Gabriel García Márquez",
             "9780307474728",
             CategoriaLibro.NOVELA,
-            200.00,
-            3
+            200.00
         ));
 
         biblioteca.agregarLibro(new Libro(
@@ -31,8 +29,7 @@ public class Main
             "Antoine de Saint-Exupéry",
             "9788498381498",
             CategoriaLibro.AVENTURA,
-            125.00,
-            5
+            125.00
         ));
 
         biblioteca.agregarUsuario(new Usuario("Ana López", "U001"));
