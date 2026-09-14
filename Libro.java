@@ -67,7 +67,7 @@ public class Libro
         return precio;
     }
 
-    public int isVendido()
+    public boolean isVendido()
     {
         return vendido;
     }
@@ -104,7 +104,7 @@ public class Libro
      */
     public boolean prestar()
     {
-        if (prestado) {
+        if (prestado || vendido) {
             return false;
         }
         prestado = true;
@@ -119,9 +119,30 @@ public class Libro
         prestado = false;
     }
 
+    public boolean vender()
+    {
+        if(prestado){
+            return false;
+        }
+        return true;
+    }
+
+    public String getEstadoTexto()
+    {
+        if(vendido){
+            return "Vendido";
+        }
+
+        if(prestado){
+            return "Prestado";
+        } else {
+            return "Disponible";
+        }
+    }
+
     public String toString()
     {
-        String estado = prestado ? "Prestado" : "Disponible";
+        String estado = getEstadoTexto();
         return titulo + " - " + autor + " (" + categoria + ", ISBN: " + isbn + ") [" + estado + "]";
     }
 }
