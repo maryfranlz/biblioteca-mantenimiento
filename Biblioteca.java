@@ -260,7 +260,7 @@ public class Biblioteca
     /**
      * @return el préstamo activo de ese libro, o null si no hay ninguno
      */
-    private Prestamo buscarPrestamoActivo(Libro libro)
+    public Prestamo buscarPrestamoActivo(Libro libro)
     {
         if(libro == null){
             return null;

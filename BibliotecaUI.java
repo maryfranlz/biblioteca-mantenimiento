@@ -64,13 +64,13 @@ public class BibliotecaUI{
         inicioPanel = new InicioPanel(biblioteca);
         LibrosPanel librosPanel = new LibrosPanel(biblioteca, inicioPanel);
         UsuariosPanel usuariosPanel = new UsuariosPanel(biblioteca);
-        //PrestamosPanel prestamosPanel = new PrestamosPanel(biblioteca);
+        PrestamosPanel prestamosPanel = new PrestamosPanel(biblioteca);
 
         contenido.setBackground(Recursos.COLOR_FONDO);
         contenido.add(inicioPanel, "INICIO");
         contenido.add(librosPanel, "LIBROS");
         contenido.add(usuariosPanel, "USUARIOS");
-        //contenido.add(prestamosPanel, "PRESTAMOS");
+        contenido.add(prestamosPanel, "PRESTAMOS");
 
         frame.add(header, BorderLayout.NORTH);
         frame.add(side, BorderLayout.WEST);
@@ -90,6 +90,20 @@ public class BibliotecaUI{
         frasePrincipito.setHorizontalAlignment(SwingConstants.RIGHT);
         frasePrincipito.setBorder(new EmptyBorder(8,20,8,20));
 
+        JLabel lblLogo = new JLabel("<html>Biblioteca<br>Central<html>");
+        lblLogo.setFont(new Font("Arial", Font.BOLD, 17));
+        lblLogo.setForeground(Recursos.COLOR_ROJO_OSCURO);
+        lblLogo.setBorder(new EmptyBorder(5,10,24,0));
+
+        ImageIcon libraryIcon = new ImageIcon("library-icon.png");
+        Image smallerLibraryIcon = libraryIcon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
+        ImageIcon hdrIcon = new ImageIcon(smallerLibraryIcon);
+
+        lblLogo.setIcon(hdrIcon);
+        lblLogo.setHorizontalTextPosition(JLabel.RIGHT);
+        lblLogo.setIconTextGap(15);
+
+        pnlHeader.add(lblLogo, BorderLayout.WEST);
         pnlHeader.add(frasePrincipito, BorderLayout.CENTER);
 
         return pnlHeader;
@@ -102,25 +116,11 @@ public class BibliotecaUI{
         pnlSideMenu.setBorder(new EmptyBorder(20, 14, 20, 14));
         pnlSideMenu.setPreferredSize(new Dimension(180, 0));
 
-        JLabel lblLogo = new JLabel("<html>Biblioteca<br>Central<html>");
-        lblLogo.setFont(new Font("Arial", Font.BOLD, 17));
-        lblLogo.setForeground(Recursos.COLOR_ROJO_OSCURO);
-        lblLogo.setBorder(new EmptyBorder(0,6,24,0));
-
-        ImageIcon libraryIcon = new ImageIcon("library-icon.png");
-        Image smallerLibraryIcon = libraryIcon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
-        ImageIcon hdrIcon = new ImageIcon(smallerLibraryIcon);
-
-        lblLogo.setIcon(hdrIcon);
-        lblLogo.setHorizontalTextPosition(JLabel.RIGHT);
-        lblLogo.setIconTextGap(15);
-
         JButton btnInicio = Recursos.crearBoton("Inicio", "dashboard.png");
         JButton btnLibros = Recursos.crearBoton("Libros", "books.png");
         JButton btnUsuarios = Recursos.crearBoton("Usuarios", "user.png");
         JButton btnPrestamos = Recursos.crearBoton("Prestamos", "exchange.png");
         
-        pnlSideMenu.add(lblLogo);
         pnlSideMenu.add(btnInicio);
         pnlSideMenu.add(Box.createVerticalStrut(10));
         pnlSideMenu.add(btnLibros);
