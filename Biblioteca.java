@@ -43,6 +43,21 @@ public class Biblioteca
         usuarios.add(usuario);
     }
 
+    public List<Libro> getLibros()
+    {
+        return new ArrayList<>(libros);
+    }
+
+    public List<Usuario> getUsuarios()
+    {
+        return new ArrayList<>(usuarios);
+    }
+
+    public List<Prestamo> getPrestamos()
+    {
+        return new ArrayList<>(prestamos);
+    }
+
     /**
      * Busca los libros cuyo título contiene el texto indicado.
      *
@@ -71,6 +86,10 @@ public class Biblioteca
     public List<Libro> buscarPorCategoria(CategoriaLibro categoria)
     {
         List<Libro> resultados = new ArrayList<>();
+
+        if(categoria == null) {
+            return getLibros();
+        }
 
         for (Libro libro : libros) {
             if (libro.getCategoria() == categoria) {
@@ -107,6 +126,38 @@ public class Biblioteca
         }
 
         return null;
+    }
+
+    /**
+     * Búsqueda global de libros
+     * @param texto puede ser título, autor, isbn o categoría
+     * @return lista de libros con coincidencia en cualquier entidad comparada
+     */
+    public List<Libro> buscarLibros(String texto)
+    {
+        List<Libro> resultados = new ArrayList<>();
+        String busqueda = "";
+
+        if(texto != null){
+            busqueda = texto.toLowerCase().trim();
+        }
+
+        for(Libro libro : libros) {
+            boolean coincidencia = false;
+
+            if(libro.getIsbn().toLowerCase().contains(busqueda) ||
+               libro.getTitulo().toLowerCase().contains(busqueda) ||
+               libro.getAutor().toLowerCase().contains(busqueda) ||
+               libro.getCategoria().toString().toLowerCase().contains(busqueda)){
+                coincidencia = true;
+            }
+
+            if(coincidencia) {
+                resultados.add(libro);
+            }
+        }
+
+        return resultados;
     }
 
     /**
@@ -149,15 +200,55 @@ public class Biblioteca
             return false;
         }
 
-        libro.devolver();
-
         Prestamo prestamo = buscarPrestamoActivo(libro);
 
         if (prestamo != null && prestamo.estaActivo()) {
             prestamo.cerrar();
         }
 
+        libro.devolver();
+
         return true;
+    }
+
+    /**
+     * 
+     * @param isbn
+     * @param idUsuario
+     * @return true si se concretó la extensión del préstamo,
+     * false si el préstamo no existe o si el usuario no ha pedido
+     * prestado ese libro; también false si ya se utilizó la extensión
+     * o si ya se devolvió el libro
+     */
+    public boolean extenderPrestamo(String isbn, String idUsuario)
+    {
+        Libro libro = buscarLibroPorIsbn(isbn);
+        Prestamo prestamo = buscarPrestamoActivo(libro);
+
+        if(prestamo == null) {
+            return false;
+        }
+
+        if(!prestamo.getUsuario().getId().equals(idUsuario)){
+            return false;
+        }
+
+        return prestamo.extender();
+    }
+
+    /**
+     * Vende un ejemplar del libro
+     * @param isbn
+     * @return true si se completó la venta, false si no existe el 
+     * libro, si está prestado o si ya fue vendido
+     */
+    public boolean venderLibro(String isbn)
+    {
+        Libro libro = buscarLibroPorIsbn(isbn);
+        if(libro == null){
+            return false;
+        }
+        return libro.vender();
     }
 
     /**
@@ -165,6 +256,10 @@ public class Biblioteca
      */
     private Prestamo buscarPrestamoActivo(Libro libro)
     {
+        if(libro == null){
+            return null;
+        }
+        
         for (Prestamo prestamo : prestamos) {
             if (prestamo.getLibro() == libro && prestamo.estaActivo()) {
                 return prestamo;
@@ -192,12 +287,14 @@ public class Biblioteca
         return resultados;
     }
 
-    /**
-     * @return una copia del historial completo de préstamos
-     */
-    public List<Prestamo> getPrestamos()
+    public boolean eliminarLibro(String isbn)
     {
-        return new ArrayList<>(prestamos);
+        Libro libro = buscarLibroPorIsbn(isbn);
+        if(libro == null || libro.isPrestado()){
+            return false;
+        }
+
+        return libros.remove(libro);
     }
 
     public String toString()

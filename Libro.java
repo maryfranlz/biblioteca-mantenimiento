@@ -1,9 +1,9 @@
 /**
  * Representa un libro de la biblioteca.
  *
- * Un libro guarda sus datos básicos (título, autor, ISBN, categoría, precio,
- * número de existencias) y sabe si está prestado o disponible. No conoce
- * a los usuarios ni a la biblioteca: sólo cuida su propio estado.
+ * Un libro guarda sus datos básicos (título, autor, ISBN, categoría,
+ * precio) y sabe si está prestado o disponible. No conoce a los
+ * usuarios ni a la biblioteca: sólo cuida su propio estado.
  */
 public class Libro
 {
@@ -121,7 +121,7 @@ public class Libro
 
     public boolean vender()
     {
-        if(prestado){
+        if(prestado || vendido){
             return false;
         }
         return true;
