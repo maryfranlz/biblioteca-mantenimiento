@@ -10,7 +10,7 @@ public class BibliotecaUI{
     //Variables gráficas Inicio
     private JButton btnInicio, btnLibros, btnUsuarios, btnPrestamos;
     private JPanel pnlSideMenu, pnlHeader, pnlContenido, pnlTarjetas, pnlSuperior, pnlTabla;
-    private JLabel lblLogo, lblFraseHeader, lblLibroTtl, lblDisponibles, lblPrestados, lblLibroRts, lblSaldo, lblPrstmReci, lblVerTodos;
+    private JLabel lblFraseHeader, lblPrstmReci, lblVerTodos;
     private JTable tablaPrestamosRecientes;
 
     private final Color COLOR_FONDO = new Color(245, 245, 245);
@@ -68,11 +68,6 @@ public class BibliotecaUI{
         btnUsuarios = crearBoton("Usuarios", "user.png");
         btnPrestamos = crearBoton("Prestamos", "exchange.png");
 
-        lblLibroTtl = new JLabel("Libros totales");
-        lblDisponibles = new JLabel("Disponibles");
-        lblPrestados = new JLabel("Prestados");
-        lblLibroRts = new JLabel("Libros con retraso");
-        lblSaldo = new JLabel("Saldo por retardos");
         lblFraseHeader = new JLabel("Sólo con el corazón se puede ver bien, lo esencial es invicible para los ojos");
         lblPrstmReci = new JLabel("Préstamos Recientes");
         lblVerTodos = new JLabel("Ver todos");
@@ -95,8 +90,8 @@ public class BibliotecaUI{
         pnlHeader.setPreferredSize(new Dimension(0, 80));
 
         pnlContenido.setBackground(COLOR_FONDO);
-        pnlContenido.setLayout(new BorderLayout(0, 15)); //!
-        pnlContenido.setBorder(new EmptyBorder(24, 22, 25, 22)); //!
+        pnlContenido.setLayout(new BorderLayout(0, 15));
+        pnlContenido.setBorder(new EmptyBorder(24, 22, 25, 22));
     }
 
     private void organizarContenido() {
@@ -149,8 +144,8 @@ public class BibliotecaUI{
         boton.setFont(new Font("Arial", Font.PLAIN, 13));
         boton.setHorizontalAlignment(SwingConstants.LEFT);
         boton.setIconTextGap(10);
-        boton.setFocusPainted(false); //!
-        boton.setBorderPainted(false); //!
+        boton.setFocusPainted(false);
+        boton.setBorderPainted(false);
         boton.setBackground(COLOR_BOTON);
         boton.setPreferredSize(new Dimension(135, 34));
         boton.setMaximumSize(new Dimension(135, 34));
