@@ -62,13 +62,13 @@ public class BibliotecaUI{
         JPanel header = crearHeader();
 
         inicioPanel = new InicioPanel(biblioteca);
-        //LibrosPanel librosPanel = new LibrosPanel(biblioteca);
+        LibrosPanel librosPanel = new LibrosPanel(biblioteca, inicioPanel);
         //UsuariosPanel usuariosPanel = new UsuariosPanel(biblioteca);
         //PrestamosPanel prestamosPanel = new PrestamosPanel(biblioteca);
 
         contenido.setBackground(Recursos.COLOR_FONDO);
         contenido.add(inicioPanel, "INICIO");
-        //contenido.add(librosPanel, "LIBROS");
+        contenido.add(librosPanel, "LIBROS");
         //contenido.add(usuariosPanel, "USUARIOS");
         //contenido.add(prestamosPanel, "PRESTAMOS");
 

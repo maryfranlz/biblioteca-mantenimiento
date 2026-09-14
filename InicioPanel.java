@@ -28,8 +28,17 @@ public class InicioPanel extends JPanel{
         int total = biblioteca.getLibros().size();
         int prestados = biblioteca.getLibros(true).size();
         int disponibles = total - prestados;
-        long retrasos = biblioteca.getPrestamos().stream().filter(p -> p.getEstado() == Prestamo.RETRASO).count();
-        double saldo = biblioteca.getPrestamos().stream().filter(p -> p.getRecargo() != null).mapToDouble(Prestamo::getRecargo).sum();
+        int retrasos = 0;
+        double saldo = 0.0;
+        for(Prestamo p : biblioteca.getPrestamos()){
+            if(p.getEstado() == Prestamo.RETRASO){
+                retrasos++;
+            }
+
+            if(p.getRecargo() != null){
+                saldo += p.getRecargo();
+            }
+        }
 
         tarjetas.add(tarjeta("Libros totales", String.valueOf(total)));
         tarjetas.add(tarjeta("Disponibles", String.valueOf(disponibles)));

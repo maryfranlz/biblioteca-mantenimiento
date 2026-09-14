@@ -1,6 +1,8 @@
 import java.awt.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -35,5 +37,21 @@ public class Recursos {
         boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         return boton;
+    }
+
+    public static JPanel panelBlanco(LayoutManager layout) {
+        JPanel panel = new JPanel(layout);
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(new EmptyBorder(12, 14, 12, 14));
+        return panel;
+    }
+
+    public static void estiloTablas(JTable tabla){
+        tabla.setFont(new Font("Arial", Font.PLAIN, 12));
+        tabla.setRowHeight(30);
+        tabla.setShowGrid(false);
+        tabla.setIntercellSpacing(new Dimension(0, 0));
+        tabla.getTableHeader().setFont(new Font("Arial", Font.BOLD, 11));
+        tabla.getTableHeader().setBackground(Color.WHITE);
     }
 }
