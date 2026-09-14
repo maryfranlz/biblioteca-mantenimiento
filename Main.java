@@ -12,21 +12,27 @@ public class Main
             "Don Quijote de la Mancha",
             "Miguel de Cervantes",
             "9788424922498",
-            CategoriaLibro.FICCION
+            CategoriaLibro.FICCION,
+            300.00,
+            2
         ));
 
         biblioteca.agregarLibro(new Libro(
             "Cien años de soledad",
             "Gabriel García Márquez",
             "9780307474728",
-            CategoriaLibro.NOVELA
+            CategoriaLibro.NOVELA,
+            200.00,
+            3
         ));
 
         biblioteca.agregarLibro(new Libro(
             "El Principito",
             "Antoine de Saint-Exupéry",
             "9788498381498",
-            CategoriaLibro.AVENTURA
+            CategoriaLibro.AVENTURA,
+            125.00,
+            5
         ));
 
         biblioteca.agregarUsuario(new Usuario("Ana López", "U001"));
