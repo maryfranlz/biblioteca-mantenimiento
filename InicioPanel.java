@@ -8,20 +8,13 @@ import javax.swing.border.EmptyBorder;
 
 public class InicioPanel extends JPanel{
 
-    private final Color COLOR_FONDO = new Color(245, 245, 245);
-    private final Color COLOR_NARANJA = new Color(239, 128, 20);
-    private final Color COLOR_CAFE = new Color(39, 3, 0);
-    private final Color COLOR_BOTON = new Color(230, 176, 157);
-    private final Color COLOR_MENU = new Color(255, 255, 255);
-    private final Color COLOR_ROJO_OSCURO = new Color(143, 41, 4);
-
     private Biblioteca biblioteca;
     private JPanel tarjetas = new JPanel(new GridLayout(1, 5, 12, 0));
 
     public InicioPanel(Biblioteca biblioteca) {
         this.biblioteca = biblioteca;
         setLayout(new BorderLayout(0, 18));
-        setBackground(COLOR_FONDO);
+        setBackground(Recursos.COLOR_FONDO);
         setBorder(new EmptyBorder(24, 22, 25, 22));
 
         tarjetas.setOpaque(false);
@@ -51,7 +44,7 @@ public class InicioPanel extends JPanel{
     public JPanel tarjeta(String texto, String valor) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(COLOR_NARANJA);
+        panel.setBackground(Recursos.COLOR_NARANJA);
         panel.setBorder(new EmptyBorder(12, 12, 10, 12));
 
         JLabel t = new JLabel(texto);
