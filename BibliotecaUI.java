@@ -41,8 +41,8 @@ public class BibliotecaUI{
             125.00
         ));
 
-        biblioteca.agregarUsuario(new Usuario("Ana López", "U001"));
-        biblioteca.agregarUsuario(new Usuario("Carlos Ruiz", "U002"));
+        biblioteca.agregarUsuario(new Usuario("Ana López", biblioteca.generarIdUsuario()));
+        biblioteca.agregarUsuario(new Usuario("Carlos Ruiz", biblioteca.generarIdUsuario()));
 
         biblioteca.prestarLibro("9780307474728", "U001");
         biblioteca.prestarLibro("9788424922498", "U002");
@@ -63,13 +63,13 @@ public class BibliotecaUI{
 
         inicioPanel = new InicioPanel(biblioteca);
         LibrosPanel librosPanel = new LibrosPanel(biblioteca, inicioPanel);
-        //UsuariosPanel usuariosPanel = new UsuariosPanel(biblioteca);
+        UsuariosPanel usuariosPanel = new UsuariosPanel(biblioteca);
         //PrestamosPanel prestamosPanel = new PrestamosPanel(biblioteca);
 
         contenido.setBackground(Recursos.COLOR_FONDO);
         contenido.add(inicioPanel, "INICIO");
         contenido.add(librosPanel, "LIBROS");
-        //contenido.add(usuariosPanel, "USUARIOS");
+        contenido.add(usuariosPanel, "USUARIOS");
         //contenido.add(prestamosPanel, "PRESTAMOS");
 
         frame.add(header, BorderLayout.NORTH);

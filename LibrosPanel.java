@@ -90,7 +90,17 @@ public class LibrosPanel extends JPanel{
         List<Libro> libros = biblioteca.buscarLibros(txtBuscar.getText());
         for(Libro libro : libros) {
             modelo.addRow(new Object[] {
-                libro.getIsbn(), libro.getTitulo(), libro.getAutor(), libro.getCategoria(), libro.getEstadoTexto(), "Devolver", "Prestar", "Extender", "Editar", "Eliminar", "Vender"
+                libro.getIsbn(),
+                libro.getTitulo(),
+                libro.getAutor(),
+                libro.getCategoria(),
+                libro.getEstadoTexto(),
+                "Devolver",
+                "Prestar",
+                "Extender",
+                "Editar",
+                "Eliminar",
+                "Vender"
             });
         }
 

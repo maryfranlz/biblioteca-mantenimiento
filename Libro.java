@@ -124,6 +124,7 @@ public class Libro
         if(prestado || vendido){
             return false;
         }
+        vendido = true;
         return true;
     }
 

@@ -37,12 +37,16 @@ public class Usuario
         return id;
     }
 
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
     /**
      * @return una copia de la lista de libros prestados
      */
     public List<Libro> getLibrosPrestados()
     {
-        return librosPrestados;
+        return new ArrayList<>(librosPrestados);
     }
 
     /**

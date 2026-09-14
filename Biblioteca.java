@@ -14,6 +14,7 @@ public class Biblioteca
     private List<Libro> libros;
     private List<Usuario> usuarios;
     private List<Prestamo> prestamos;
+    private int contadorUsuarios = 0;
 
     /**
      * Crea una biblioteca vacía.
@@ -248,7 +249,12 @@ public class Biblioteca
         if(libro == null){
             return false;
         }
-        return libro.vender();
+
+        if(libro.vender()){
+            return libros.remove(libro);
+        }
+
+        return false;
     }
 
     /**
@@ -279,7 +285,7 @@ public class Biblioteca
         List<Libro> resultados = new ArrayList<>();
 
         for (Libro libro : libros) {
-            if (libro.isPrestado() == prestados) {
+            if (libro.isPrestado() == prestados && !libro.isVendido()) {
                 resultados.add(libro);
             }
         }
@@ -295,6 +301,20 @@ public class Biblioteca
         }
 
         return libros.remove(libro);
+    }
+
+    public String generarIdUsuario(){
+        contadorUsuarios++;
+        return String.format("U%03d", contadorUsuarios);
+    }
+
+    public boolean eliminarUsuario(String idUsuario)
+    {
+        Usuario usuario = buscarUsuarioPorId(idUsuario);
+        if(usuario == null){
+            return false;
+        }
+        return usuarios.remove(usuario);
     }
 
     public String toString()
