@@ -34,14 +34,20 @@ public class Biblioteca
         return nombre;
     }
 
-    public void agregarLibro(Libro libro)
+    public boolean agregarLibro(Libro libro)
     {
-        libros.add(libro);
+        if (libro == null || libro.getIsbn() == null || buscarLibroPorIsbn(libro.getIsbn()) != null) {
+            return false;
+        }
+        return libros.add(libro);
     }
 
-    public void agregarUsuario(Usuario usuario)
+    public boolean agregarUsuario(Usuario usuario)
     {
-        usuarios.add(usuario);
+        if (usuario == null || usuario.getId() == null || buscarUsuarioPorId(usuario.getId()) != null) {
+            return false;
+        }
+        return usuarios.add(usuario);
     }
 
     public List<Libro> getLibros()
@@ -68,9 +74,13 @@ public class Biblioteca
     public List<Libro> buscarPorTitulo(String texto)
     {
         List<Libro> resultados = new ArrayList<>();
+        if (texto == null) {
+            return resultados;
+        }
 
+        String busqueda = texto.toLowerCase().trim();
         for (Libro libro : libros) {
-            if (libro.getTitulo().toLowerCase().contains(texto.toLowerCase())) {
+            if (libro.getTitulo() != null && libro.getTitulo().toLowerCase().contains(busqueda)) {
                 resultados.add(libro);
             }
         }
@@ -146,10 +156,12 @@ public class Biblioteca
         for(Libro libro : libros) {
             boolean coincidencia = false;
 
-            if(libro.getIsbn().toLowerCase().contains(busqueda) ||
-               libro.getTitulo().toLowerCase().contains(busqueda) ||
-               libro.getAutor().toLowerCase().contains(busqueda) ||
-               libro.getCategoria().toString().toLowerCase().contains(busqueda)){
+            String isbn = libro.getIsbn() != null ? libro.getIsbn().toLowerCase() : "";
+            String titulo = libro.getTitulo() != null ? libro.getTitulo().toLowerCase() : "";
+            String autor = libro.getAutor() != null ? libro.getAutor().toLowerCase() : "";
+            String cat = libro.getCategoria() != null ? libro.getCategoria().toString().toLowerCase() : "";
+
+            if(isbn.contains(busqueda) || titulo.contains(busqueda) || autor.contains(busqueda) || cat.contains(busqueda)){
                 coincidencia = true;
             }
 
@@ -250,11 +262,7 @@ public class Biblioteca
             return false;
         }
 
-        if(libro.vender()){
-            return libros.remove(libro);
-        }
-
-        return false;
+        return libro.vender();
     }
 
     /**
@@ -304,14 +312,25 @@ public class Biblioteca
     }
 
     public String generarIdUsuario(){
-        contadorUsuarios++;
+        int maxId = 0;
+        for (Usuario u : usuarios) {
+            if (u.getId() != null && u.getId().matches("U\\d+")) {
+                try {
+                    int num = Integer.parseInt(u.getId().substring(1));
+                    if (num > maxId) {
+                        maxId = num;
+                    }
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        contadorUsuarios = Math.max(contadorUsuarios, maxId) + 1;
         return String.format("U%03d", contadorUsuarios);
     }
 
     public boolean eliminarUsuario(String idUsuario)
     {
         Usuario usuario = buscarUsuarioPorId(idUsuario);
-        if(usuario == null){
+        if(usuario == null || !usuario.getLibrosPrestados().isEmpty()){
             return false;
         }
         return usuarios.remove(usuario);
@@ -319,7 +338,8 @@ public class Biblioteca
 
     public String toString()
     {
-        return "Biblioteca " + nombre
+        String nombreBiblioteca = (nombre != null && nombre.toLowerCase().startsWith("biblioteca")) ? nombre : "Biblioteca " + nombre;
+        return nombreBiblioteca
              + "\nLibros registrados: " + libros.size()
              + "\nDisponibles: " + getLibros(false).size()
              + "\nPrestados: " + getLibros(true).size()

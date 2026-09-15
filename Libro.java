@@ -25,12 +25,12 @@ public class Libro
      */
     public Libro(String titulo, String autor, String isbn, CategoriaLibro categoria, double precio)
     {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.isbn = isbn;
+        this.titulo = (titulo != null) ? titulo.trim() : "";
+        this.autor = (autor != null) ? autor.trim() : "";
+        this.isbn = (isbn != null) ? isbn.trim() : "";
         this.categoria = categoria;
         this.prestado = false;
-        this.precio = precio;
+        this.precio = Math.max(0.0, precio);
         this.vendido = false;
     }
 
@@ -94,7 +94,15 @@ public class Libro
 
     public void setPrecio(double precio)
     {
-        this.precio = precio;
+        this.precio = Math.max(0.0, precio);
+    }
+
+    /**
+     * @return true si el libro está disponible (no prestado y no vendido)
+     */
+    public boolean isDisponible()
+    {
+        return !prestado && !vendido;
     }
 
     /**

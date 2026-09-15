@@ -21,35 +21,28 @@ public class ExtensionDialog extends JDialog{
         if(libroPreseleccionado != null) {
             Prestamo p = biblioteca.buscarPrestamoActivo(libroPreseleccionado);
 
-            if(p != null && !p.isExtensionUtilizada()){
+            if(p != null && p.getEstado() == Prestamo.ACTIVO && !p.isExtensionUtilizada()){
                 cbPrestamos.addItem(p);
                 cbPrestamos.setEnabled(false);
-            } else {
-                JOptionPane.showMessageDialog(owner, "El libro no tiene un préstamo activo o ya se utilizó la extensión");
-                dispose();
-                return;
             }
         } else {
             List<Prestamo> elegibles = biblioteca.getPrestamos().stream()
-                .filter(p -> p.estaActivo() && !p.isExtensionUtilizada()).toList();
-            
-                if(elegibles.isEmpty()){
-                    JOptionPane.showMessageDialog(owner, "No hay préstamos activos elegibles para extensión.");
-                    dispose();
-                    return;
-                }
+                .filter(p -> p.getEstado() == Prestamo.ACTIVO && !p.isExtensionUtilizada()).toList();
             
             for(Prestamo p : elegibles){
                 cbPrestamos.addItem(p);
             }
         }
 
-        JPanel campos = new JPanel(new GridLayout(1, 2, 8 ,8));
+        JPanel campos = new JPanel(new GridLayout(0, 2, 8 ,8));
         campos.add(new JLabel("Préstamo:"));
         campos.add(cbPrestamos);
         
         JButton btnCancelar = new JButton("Cancelar");
         JButton btnGuardar = new JButton("Extender préstamo");
+        if(cbPrestamos.getItemCount() == 0){
+            btnGuardar.setEnabled(false);
+        }
         btnCancelar.addActionListener(e -> dispose());
         btnGuardar.addActionListener(e -> {
             Prestamo p = (Prestamo) cbPrestamos.getSelectedItem();

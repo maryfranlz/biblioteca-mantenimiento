@@ -23,9 +23,11 @@ public class EditorBoton extends DefaultCellEditor {
     public Component getTableCellEditorComponent(JTable table, Object value, boolean selected, int fila, int columna) {
         this.fila = fila;
         this.columna = columna;
-        boton.setText(value == null ? "" : value.toString());
-        boton.setBackground(columna == 9 ? new Color(220, 100, 90) : Recursos.COLOR_BOTON);
-        boton.setForeground(columna == 9 ? Color.WHITE : Color.BLACK);
+        String texto = value == null ? "" : value.toString();
+        boton.setText(texto);
+        boolean esEliminar = "Eliminar".equalsIgnoreCase(texto);
+        boton.setBackground(esEliminar ? new Color(220, 100, 90) : Recursos.COLOR_BOTON);
+        boton.setForeground(esEliminar ? Color.WHITE : Color.BLACK);
         return boton;
     }
 

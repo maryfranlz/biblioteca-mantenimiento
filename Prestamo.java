@@ -109,6 +109,9 @@ public class Prestamo
      */
     public void cerrar()
     {
+        if (estado == DEVUELTO) {
+            return;
+        }
         actualizarEstado();
 
         fechaDevolucion = LocalDate.now();
@@ -138,11 +141,12 @@ public class Prestamo
     }
 
     /**
-     * @return false si ya se utlilizó la extensión o si ya se devolvió el libro
+     * @return false si ya se utilizó la extensión, si ya se devolvió el libro o si está en retraso
      */
     public boolean extender()
     {
-        if(!estaActivo() || isExtensionUtilizada()){
+        actualizarEstado();
+        if(estado != ACTIVO || isExtensionUtilizada()){
             return false;
         }
 

@@ -27,7 +27,7 @@ public class InicioPanel extends JPanel{
 
         int total = biblioteca.getLibros().size();
         int prestados = biblioteca.getLibros(true).size();
-        int disponibles = total - prestados;
+        int disponibles = biblioteca.getLibros(false).size();
         int retrasos = 0;
         double saldo = 0.0;
         for(Prestamo p : biblioteca.getPrestamos()){

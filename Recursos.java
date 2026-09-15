@@ -19,11 +19,20 @@ public class Recursos {
     }
 
     public static JButton crearBoton(String texto, String iconoFile) {
-        ImageIcon iconoOg = new ImageIcon(iconoFile);
-        Image imagen = iconoOg.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
-        ImageIcon icono = new ImageIcon(imagen);
-
-        JButton boton = new JButton(texto, icono);
+        JButton boton;
+        if (iconoFile != null && !iconoFile.isBlank()) {
+            java.io.File f = new java.io.File(iconoFile);
+            if (f.exists()) {
+                ImageIcon iconoOg = new ImageIcon(iconoFile);
+                Image imagen = iconoOg.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+                ImageIcon icono = new ImageIcon(imagen);
+                boton = new JButton(texto, icono);
+            } else {
+                boton = new JButton(texto);
+            }
+        } else {
+            boton = new JButton(texto);
+        }
 
         boton.setFont(new Font("Arial", Font.PLAIN, 13));
         boton.setHorizontalAlignment(SwingConstants.LEFT);

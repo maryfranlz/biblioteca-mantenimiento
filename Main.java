@@ -71,7 +71,7 @@ public class Main
         System.out.println("\n--- Devolución de Ana López ---");
 
         System.out.println(
-            biblioteca.devolverLibro("9788424922498", "U001")
+            biblioteca.devolverLibro("9780307474728", "U001")
                 ? "Devolución realizada"
                 : "No se pudo devolver"
         );

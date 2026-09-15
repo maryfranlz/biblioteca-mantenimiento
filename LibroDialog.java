@@ -45,23 +45,40 @@ public class LibroDialog extends JDialog{
                 if(txtTitulo.getText().isBlank() || txtAutor.getText().isBlank() || txtIsbn.getText().isBlank()) {
                     throw new IllegalArgumentException("Completa los campos obligatorios");
                 }
+
+                double precio;
+                try {
+                    precio = Double.parseDouble(txtPrecio.getText().trim());
+                } catch (NumberFormatException nfe) {
+                    throw new IllegalArgumentException("El precio debe ser un número válido");
+                }
+                if (precio < 0) {
+                    throw new IllegalArgumentException("El precio no puede ser negativo");
+                }
+
+                String isbnIngresado = txtIsbn.getText().trim();
+                Libro libroExistente = biblioteca.buscarLibroPorIsbn(isbnIngresado);
+
                 if(libro == null){
-                    if(biblioteca.buscarLibroPorIsbn(txtIsbn.getText().trim()) != null) {
+                    if(libroExistente != null) {
                         throw new IllegalArgumentException("El ISBN ya existe");
                     }
                     biblioteca.agregarLibro(new Libro(
                         txtTitulo.getText().trim(),
                         txtAutor.getText().trim(),
-                        txtIsbn.getText().trim(),
+                        isbnIngresado,
                         (CategoriaLibro) categoria.getSelectedItem(),
-                        Double.parseDouble(txtPrecio.getText())
+                        precio
                     ));
                 } else {
+                    if(libroExistente != null && libroExistente != libro) {
+                        throw new IllegalArgumentException("El ISBN ya pertenece a otro libro registrado");
+                    }
                     libro.setTitulo(txtTitulo.getText().trim());
                     libro.setAutor(txtAutor.getText().trim());
-                    libro.setIsbn(txtIsbn.getText().trim());
+                    libro.setIsbn(isbnIngresado);
                     libro.setCategoria((CategoriaLibro) categoria.getSelectedItem());
-                    libro.setPrecio(Double.parseDouble(txtPrecio.getText()));
+                    libro.setPrecio(precio);
                 }
 
                 onSave.run();

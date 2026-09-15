@@ -9,7 +9,7 @@ public class DevolucionDialog extends JDialog{
     }
 
     public DevolucionDialog(Window owner, Biblioteca biblioteca, Libro libroPreseleccionado, Runnable onSave) {
-        super(owner, "Devolver libroPreseleccionado", ModalityType.APPLICATION_MODAL);
+        super(owner, "Devolver libro", ModalityType.APPLICATION_MODAL);
         setSize(440, 330);
         setLocationRelativeTo(owner);
 
@@ -24,33 +24,26 @@ public class DevolucionDialog extends JDialog{
                 cbPrestamos.addItem(p);
                 cbPrestamos.setEnabled(false);
             }
-            else {
-                JOptionPane.showMessageDialog(owner, "El libro no tiene un préstamo activo.");
-                dispose();
-                return;
-            }
         } else {
             List<Prestamo> prestamosActivos = biblioteca.getPrestamos().stream()
                 .filter(Prestamo::estaActivo)
-                 .toList();
-
-            if(prestamosActivos.isEmpty()){
-                JOptionPane.showMessageDialog(owner, "No hay préstamos activos para devolver.");
-                dispose();
-                return;
-            }
+                .toList();
 
             for(Prestamo p : prestamosActivos){
                 cbPrestamos.addItem(p);
             }
         }
 
-        JPanel campos = new JPanel(new GridLayout(1,2,8,8));
+        JPanel campos = new JPanel(new GridLayout(0, 2, 8, 8));
         campos.add(new JLabel("Préstamo activo:"));
         campos.add(cbPrestamos);
 
         JButton btnCancelar = new JButton("Cancelar");
         JButton btnGuardar = new JButton("Devolver libro");
+        if(cbPrestamos.getItemCount() == 0){
+            btnGuardar.setEnabled(false);
+        }
+
         btnCancelar.addActionListener(e -> dispose());
         btnGuardar.addActionListener(e -> {
             Prestamo p = (Prestamo) cbPrestamos.getSelectedItem();
@@ -59,7 +52,9 @@ public class DevolucionDialog extends JDialog{
                 JOptionPane.showMessageDialog(this, "Devolución realizada. Recargo: " + recargo);
                 onSave.run();
                 dispose();
-            } else JOptionPane.showMessageDialog(this, "No se pudo realizar la devolución.");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo realizar la devolución.");
+            }
         });
 
         JPanel botones = new JPanel(new FlowLayout(FlowLayout.RIGHT));

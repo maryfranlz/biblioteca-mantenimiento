@@ -19,58 +19,44 @@ ESTRUCTURA
                        en que fecha. Estado ACTIVO o DEVUELTO.
   Biblioteca.java      Guarda libros, usuarios y prestamos, y coordina
                        las busquedas, los prestamos y las devoluciones.
-  Main.java            Programa de demostracion (no es parte del
-                       dominio).
+  Main.java            Programa de demostracion por consola.
+  BibliotecaUI.java    Interfaz grafica completa construida en Java Swing.
+  *Panel.java          Paneles de la interfaz: Inicio, Libros, Usuarios y Prestamos.
+  *Dialog.java         Ventanas modales para altas, ediciones, prestamos, devoluciones y extensiones.
 
   Relaciones:
-      Main --> Biblioteca --> Libro --> CategoriaLibro
-                          --> Usuario --> Libro
-                          --> Prestamo --> Usuario
-                                       --> Libro
+      BibliotecaUI / Main --> Biblioteca --> Libro --> CategoriaLibro
+                                         --> Usuario --> Libro
+                                         --> Prestamo --> Usuario
+                                                      --> Libro
 
 FUNCIONALIDAD
 -------------
-  - Registrar libros y usuarios.
-  - Buscar libros por titulo (sin distinguir mayusculas).
-  - Buscar libros por categoria.
-  - Buscar un libro por ISBN y un usuario por ID.
-  - Prestar un libro a un usuario (se crea su Prestamo).
-  - Devolver un libro (se cierra su Prestamo).
-  - Listar libros disponibles, libros prestados e historial de
-    prestamos.
+  - Registrar y editar libros y usuarios con validaciones de unicidad.
+  - Catalogo interactivo con busqueda en tiempo real y filtrado por categorias.
+  - Prestar libros a usuarios (con plazo de 14 dias).
+  - Extension unica de prestamos (7 dias adicionales para prestamos al dia).
+  - Devolucion de libros con calculo automatico de recargos por retraso ($10/dia).
+  - Venta de libros y baja de inventario.
+  - Dashboard de estadisticas (libros totales, disponibles, prestados, retrasos y saldo).
+  - Listado de usuarios con conteo de libros en posesion y proteccion contra borrado.
 
-REGLA IMPORTANTE
-----------------
-  Solo Biblioteca decide si un prestamo o una devolucion son validos.
-  Libro, Usuario y Prestamo nada mas guardan su propio estado. Asi el
-  libro, la lista del usuario y el registro de prestamos nunca se
-  quedan desincronizados.
+REGLAS DE NEGOCIO
+-----------------
+  1. Solo Biblioteca coordina la validez de prestamos, devoluciones y bajas.
+  2. No se permite eliminar un usuario si aun tiene libros prestados en su poder.
+  3. No se permite prestar, vender o eliminar libros en estado no valido.
+  4. Los prestamos con retraso no pueden ser extendidos; deben ser devueltos cubriendo el recargo.
+  5. El historial nunca se borra: los prestamos devueltos se conservan para auditoria.
 
-  El historial nunca se borra: un Prestamo devuelto se queda en la
-  lista marcado como DEVUELTO, con su fecha.
+COMO EJECUTAR LA INTERFAZ GRAFICA (SWING)
+------------------------------------------
+  Desde la terminal:
+      javac -encoding UTF-8 *.java
+      java BibliotecaUI
 
-COMO EJECUTARLO EN BlueJ
-------------------------
-  1. Abrir BlueJ  ->  Project  ->  Open Project...
-  2. Elegir esta carpeta ("Biblioteca Mini 5").
-  3. Clic derecho sobre la clase Main  ->  void main(String[] args).
-
-COMO EJECUTARLO DESDE LA TERMINAL
+COMO EJECUTAR LA DEMO EN CONSOLA
 ---------------------------------
-  Situarse en esta carpeta y escribir:
-
+  Desde la terminal:
       javac -encoding UTF-8 *.java
       java Main
-
-QUE SE QUITO RESPECTO AL PROYECTO ORIGINAL
-------------------------------------------
-  Interfaz grafica (BibliotecaGUI, DialogoNuevoLibro, DialogoUbicacion),
-  graficas estadisticas (GraficoPastel, GraficoLineal, ...), la herencia
-  (Persona, Empleado, LibroDigital), PrestamoCubi, las multas por
-  retraso, los vencimientos, la lista de espera, el historial de estados
-  del libro y las pruebas JUnit.
-
-DIFERENCIA CON LA CARPETA "Biblioteca Mini"
--------------------------------------------
-  "Biblioteca Mini" tiene 3 clases de dominio (Libro, Usuario,
-  Biblioteca). Esta version agrega Prestamo y CategoriaLibro.

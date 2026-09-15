@@ -63,8 +63,12 @@ public class BibliotecaUI{
 
         inicioPanel = new InicioPanel(biblioteca);
         LibrosPanel librosPanel = new LibrosPanel(biblioteca, inicioPanel);
-        UsuariosPanel usuariosPanel = new UsuariosPanel(biblioteca);
-        PrestamosPanel prestamosPanel = new PrestamosPanel(biblioteca);
+        UsuariosPanel usuariosPanel = new UsuariosPanel(biblioteca, inicioPanel::actualizar);
+        PrestamosPanel prestamosPanel = new PrestamosPanel(biblioteca, () -> {
+            inicioPanel.actualizar();
+            librosPanel.refresh();
+            usuariosPanel.refresh();
+        });
 
         contenido.setBackground(Recursos.COLOR_FONDO);
         contenido.add(inicioPanel, "INICIO");
@@ -90,18 +94,20 @@ public class BibliotecaUI{
         frasePrincipito.setHorizontalAlignment(SwingConstants.RIGHT);
         frasePrincipito.setBorder(new EmptyBorder(8,20,8,20));
 
-        JLabel lblLogo = new JLabel("<html>Biblioteca<br>Central<html>");
+        JLabel lblLogo = new JLabel("<html>Biblioteca<br>Central</html>");
         lblLogo.setFont(new Font("Arial", Font.BOLD, 17));
         lblLogo.setForeground(Recursos.COLOR_ROJO_OSCURO);
         lblLogo.setBorder(new EmptyBorder(5,10,24,0));
 
-        ImageIcon libraryIcon = new ImageIcon("library-icon.png");
-        Image smallerLibraryIcon = libraryIcon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
-        ImageIcon hdrIcon = new ImageIcon(smallerLibraryIcon);
-
-        lblLogo.setIcon(hdrIcon);
-        lblLogo.setHorizontalTextPosition(JLabel.RIGHT);
-        lblLogo.setIconTextGap(15);
+        java.io.File logoFile = new java.io.File("library-icon.png");
+        if(logoFile.exists()){
+            ImageIcon libraryIcon = new ImageIcon("library-icon.png");
+            Image smallerLibraryIcon = libraryIcon.getImage().getScaledInstance(45, 45, Image.SCALE_SMOOTH);
+            ImageIcon hdrIcon = new ImageIcon(smallerLibraryIcon);
+            lblLogo.setIcon(hdrIcon);
+            lblLogo.setHorizontalTextPosition(JLabel.RIGHT);
+            lblLogo.setIconTextGap(15);
+        }
 
         pnlHeader.add(lblLogo, BorderLayout.WEST);
         pnlHeader.add(frasePrincipito, BorderLayout.CENTER);
@@ -119,7 +125,7 @@ public class BibliotecaUI{
         JButton btnInicio = Recursos.crearBoton("Inicio", "dashboard.png");
         JButton btnLibros = Recursos.crearBoton("Libros", "books.png");
         JButton btnUsuarios = Recursos.crearBoton("Usuarios", "user.png");
-        JButton btnPrestamos = Recursos.crearBoton("Prestamos", "exchange.png");
+        JButton btnPrestamos = Recursos.crearBoton("Préstamos", "exchange.png");
         
         pnlSideMenu.add(btnInicio);
         pnlSideMenu.add(Box.createVerticalStrut(10));
@@ -129,10 +135,25 @@ public class BibliotecaUI{
         pnlSideMenu.add(Box.createVerticalStrut(10));
         pnlSideMenu.add(btnPrestamos);
 
-        btnInicio.addActionListener(e -> cardLayout.show(contenido, "INICIO"));
-        btnLibros.addActionListener(e -> cardLayout.show(contenido, "LIBROS"));
-        btnUsuarios.addActionListener(e -> cardLayout.show(contenido, "USUARIOS"));
-        btnPrestamos.addActionListener(e -> cardLayout.show(contenido, "PRESTAMOS"));
+        btnInicio.addActionListener(e -> {
+            inicioPanel.actualizar();
+            cardLayout.show(contenido, "INICIO");
+        });
+        btnLibros.addActionListener(e -> {
+            Component comp = contenido.getComponent(1);
+            if(comp instanceof LibrosPanel lp) lp.refresh();
+            cardLayout.show(contenido, "LIBROS");
+        });
+        btnUsuarios.addActionListener(e -> {
+            Component comp = contenido.getComponent(2);
+            if(comp instanceof UsuariosPanel up) up.refresh();
+            cardLayout.show(contenido, "USUARIOS");
+        });
+        btnPrestamos.addActionListener(e -> {
+            Component comp = contenido.getComponent(3);
+            if(comp instanceof PrestamosPanel pp) pp.refresh();
+            cardLayout.show(contenido, "PRESTAMOS");
+        });
 
         return pnlSideMenu;
     }
