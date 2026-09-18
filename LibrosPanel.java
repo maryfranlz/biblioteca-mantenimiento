@@ -88,6 +88,14 @@ public class LibrosPanel extends JPanel{
         modelo.setRowCount(0);
         
         List<Libro> libros = biblioteca.buscarLibros(txtBuscar.getText());
+
+        String seleccion = (String) categoria.getSelectedItem();
+
+        if(seleccion != null && !seleccion.equals("Todas las categorías")){
+            CategoriaLibro categoriaSeleccionada = CategoriaLibro.valueOf(seleccion);
+            libros = libros.stream().filter(libro -> libro.getCategoria() == categoriaSeleccionada).toList();
+        }
+
         for(Libro libro : libros) {
             modelo.addRow(new Object[] {
                 libro.getIsbn(),
@@ -108,6 +116,7 @@ public class LibrosPanel extends JPanel{
             tablaLibros.getColumnModel().getColumn(c).setCellRenderer(new RenderBoton());
             tablaLibros.getColumnModel().getColumn(c).setCellEditor(new EditorBoton(new JCheckBox(), this::action));
         }
+        tablaLibros.repaint();
     }
 
     private void action(int fila, int columna) {
@@ -123,12 +132,43 @@ public class LibrosPanel extends JPanel{
             case 7 -> new ExtensionDialog(SwingUtilities.getWindowAncestor(this), biblioteca, libro, this::refresh).setVisible(true);
             case 8 -> new LibroDialog(SwingUtilities.getWindowAncestor(this), biblioteca, libro, this::refresh).setVisible(true);
             case 9 -> {
-                int r = JOptionPane.showConfirmDialog(this, "¿Eliminar el libro seleccionado?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                if (libro.isPrestado()) {
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "No se puede eliminar el libro porque actualmente está prestado.",
+                        "No se puede eliminar",
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                    return;
+                }
+                int r = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Eliminar el libro seleccionado?",
+                    "Confirmar",
+                    JOptionPane.YES_NO_OPTION);
                 if(r == JOptionPane.YES_OPTION && biblioteca.eliminarLibro(isbn)){
                     refresh();
+                    pnlInicio.actualizar();
                 }
             }
             case 10 -> {
+                if(libro.isVendido()){
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "Este libro ya fue vendido y no se puede volver a vender.",
+                        "Venta no disponible",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                if(libro.isPrestado()){
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "No se puede vender el libro porque actualmente está prestado.",
+                        "Venta no disponible",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
                 int r = JOptionPane.showConfirmDialog(this,
                     "Vender un ejemplar de \"" + libro.getTitulo() + "\" por $" + libro.getPrecio() + "?",
                     "Confirmar venta",

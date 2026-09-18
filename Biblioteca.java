@@ -250,11 +250,7 @@ public class Biblioteca
             return false;
         }
 
-        if(libro.vender()){
-            return libros.remove(libro);
-        }
-
-        return false;
+        return libro.vender();
     }
 
     /**

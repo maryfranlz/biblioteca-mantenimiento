@@ -15,8 +15,11 @@ public class PrestamosPanel extends JPanel{
         setBackground(Recursos.COLOR_FONDO);
         setBorder(new EmptyBorder(24, 22, 25, 22));
 
-        JPanel pnlSuperior = new JPanel(new BorderLayout(10, 0));
+        JPanel pnlSuperior = new JPanel(new GridLayout(1, 2, 20, 0));
         pnlSuperior.setOpaque(false);
+
+        JPanel pnlBotones = new JPanel(new GridLayout(1, 3, 10, 0));
+        pnlBotones.setOpaque(false);
 
         JButton btnExtenderPrestamo = Recursos.crearBoton("Extender préstamo", null);
         btnExtenderPrestamo.setBackground(Color.GREEN);
@@ -39,9 +42,29 @@ public class PrestamosPanel extends JPanel{
             new PrestamoDialog(SwingUtilities.getWindowAncestor(this), biblioteca, this::refresh)
         .setVisible(true));
 
-        pnlSuperior.add(btnExtenderPrestamo, BorderLayout.WEST);
-        pnlSuperior.add(btnDevolver, BorderLayout.CENTER);
-        pnlSuperior.add(btnPrestar, BorderLayout.EAST);
+        Dimension tamanoBoton = new Dimension(125, 34);
+
+        btnExtenderPrestamo.setPreferredSize(tamanoBoton);
+        btnExtenderPrestamo.setMaximumSize(tamanoBoton);
+
+        btnDevolver.setPreferredSize(tamanoBoton);
+        btnDevolver.setMaximumSize(tamanoBoton);
+
+        btnPrestar.setPreferredSize(tamanoBoton);
+        btnPrestar.setMaximumSize(tamanoBoton);
+
+        pnlBotones.add(btnExtenderPrestamo);
+        pnlBotones.add(btnDevolver);
+        pnlBotones.add(btnPrestar);
+
+        JPanel pnlVacio = new JPanel();
+        pnlVacio.setOpaque(false);
+
+        pnlSuperior.add(pnlBotones);
+        pnlSuperior.add(pnlVacio);
+
+        pnlSuperior.setPreferredSize(new Dimension(0, 45));
+
         add(pnlSuperior, BorderLayout.NORTH);
 
         JPanel pnlContenido = Recursos.panelBlanco(new BorderLayout());

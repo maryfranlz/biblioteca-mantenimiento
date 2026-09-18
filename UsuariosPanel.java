@@ -70,6 +70,11 @@ public class UsuariosPanel extends JPanel{
             tablaUsuarios.getColumnModel().getColumn(c).setCellRenderer(new RenderBoton());
             tablaUsuarios.getColumnModel().getColumn(c).setCellEditor(new EditorBoton(new JCheckBox(), this::action));
         }
+
+        ajustarAnchoColumnas();
+
+        tablaUsuarios.revalidate();
+        tablaUsuarios.repaint();
     }
 
     private void action(int fila, int columna) {
@@ -93,5 +98,38 @@ public class UsuariosPanel extends JPanel{
                 }
             }
         }
+    }
+
+    private void ajustarAnchoColumnas() {
+        int anchoId = 0;
+        int anchoNombre = 0;
+        int anchoLibros = 0;
+
+        FontMetrics fm = tablaUsuarios.getFontMetrics(tablaUsuarios.getFont());
+
+        anchoId = fm.stringWidth("ID");
+        anchoNombre = fm.stringWidth("Nombre");
+        anchoLibros = fm.stringWidth("Libros prestados");
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String id = String.valueOf(modelo.getValueAt(i, 0));
+            String nombre = String.valueOf(modelo.getValueAt(i, 1));
+            String libros = String.valueOf(modelo.getValueAt(i, 2));
+
+            anchoId = Math.max(anchoId, fm.stringWidth(id));
+            anchoNombre = Math.max(anchoNombre, fm.stringWidth(nombre));
+            anchoLibros = Math.max(anchoLibros, fm.stringWidth(libros));
+        }
+
+        anchoId += 20;
+        anchoNombre += 20;
+        anchoLibros += 60;
+
+        tablaUsuarios.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        tablaUsuarios.getColumnModel().getColumn(0).setPreferredWidth(anchoId);
+        tablaUsuarios.getColumnModel().getColumn(1).setPreferredWidth(anchoNombre);
+        tablaUsuarios.getColumnModel().getColumn(2).setPreferredWidth(anchoLibros);
+        tablaUsuarios.getColumnModel().getColumn(3).setPreferredWidth(80);
+        tablaUsuarios.getColumnModel().getColumn(4).setPreferredWidth(90);
     }
 }
