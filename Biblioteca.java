@@ -14,6 +14,7 @@ public class Biblioteca
     private List<Libro> libros;
     private List<Usuario> usuarios;
     private List<Prestamo> prestamos;
+    private List<Venta> ventas;
     private int contadorUsuarios = 0;
 
     /**
@@ -27,6 +28,7 @@ public class Biblioteca
         this.libros = new ArrayList<>();
         this.usuarios = new ArrayList<>();
         this.prestamos = new ArrayList<>();
+        this.ventas = new ArrayList<>();
     }
 
     public String getNombre()
@@ -257,12 +259,29 @@ public class Biblioteca
      */
     public boolean venderLibro(String isbn)
     {
+        return registrarVenta(isbn, "Cliente General", "N/A", "N/A", "N/A");
+    }
+
+    /**
+     * Registra una venta completa con los datos del comprador.
+     */
+    public boolean registrarVenta(String isbn, String nombreComprador, String identificacion, String telefono, String correo)
+    {
         Libro libro = buscarLibroPorIsbn(isbn);
-        if(libro == null){
+        if (libro == null) {
             return false;
         }
 
-        return libro.vender();
+        if (libro.vender()) {
+            ventas.add(new Venta(libro, nombreComprador, identificacion, telefono, correo, libro.getPrecio()));
+            return true;
+        }
+        return false;
+    }
+
+    public List<Venta> getVentas()
+    {
+        return new ArrayList<>(ventas);
     }
 
     /**

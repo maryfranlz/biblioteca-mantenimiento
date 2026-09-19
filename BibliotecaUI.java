@@ -69,12 +69,14 @@ public class BibliotecaUI{
             librosPanel.refresh();
             usuariosPanel.refresh();
         });
+        VentasPanel ventasPanel = new VentasPanel(biblioteca);
 
         contenido.setBackground(Recursos.COLOR_FONDO);
         contenido.add(inicioPanel, "INICIO");
         contenido.add(librosPanel, "LIBROS");
         contenido.add(usuariosPanel, "USUARIOS");
         contenido.add(prestamosPanel, "PRESTAMOS");
+        contenido.add(ventasPanel, "VENTAS");
 
         frame.add(header, BorderLayout.NORTH);
         frame.add(side, BorderLayout.WEST);
@@ -126,6 +128,7 @@ public class BibliotecaUI{
         JButton btnLibros = Recursos.crearBoton("Libros", "books.png");
         JButton btnUsuarios = Recursos.crearBoton("Usuarios", "user.png");
         JButton btnPrestamos = Recursos.crearBoton("Préstamos", "exchange.png");
+        JButton btnVentas = Recursos.crearBoton("Ventas", null);
         
         pnlSideMenu.add(btnInicio);
         pnlSideMenu.add(Box.createVerticalStrut(10));
@@ -134,6 +137,8 @@ public class BibliotecaUI{
         pnlSideMenu.add(btnUsuarios);
         pnlSideMenu.add(Box.createVerticalStrut(10));
         pnlSideMenu.add(btnPrestamos);
+        pnlSideMenu.add(Box.createVerticalStrut(10));
+        pnlSideMenu.add(btnVentas);
 
         btnInicio.addActionListener(e -> {
             inicioPanel.actualizar();
@@ -153,6 +158,11 @@ public class BibliotecaUI{
             Component comp = contenido.getComponent(3);
             if(comp instanceof PrestamosPanel pp) pp.refresh();
             cardLayout.show(contenido, "PRESTAMOS");
+        });
+        btnVentas.addActionListener(e -> {
+            Component comp = contenido.getComponent(4);
+            if(comp instanceof VentasPanel vp) vp.refresh();
+            cardLayout.show(contenido, "VENTAS");
         });
 
         return pnlSideMenu;

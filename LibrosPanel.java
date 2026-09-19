@@ -188,14 +188,12 @@ public class LibrosPanel extends JPanel{
                     JOptionPane.showMessageDialog(this, "No se puede vender un libro prestado.", "Aviso", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
-                int r = JOptionPane.showConfirmDialog(this,
-                    "¿Vender un ejemplar de \"" + libro.getTitulo() + "\" por $" + String.format("%.2f", libro.getPrecio()) + "?",
-                    "Confirmar venta",
-                    JOptionPane.YES_NO_OPTION
-                );
-                if(r == JOptionPane.YES_OPTION && biblioteca.venderLibro(isbn)){
-                    refrescarTodo();
-                }
+                new VentaDialog(
+                    SwingUtilities.getWindowAncestor(this),
+                    biblioteca,
+                    libro,
+                    this::refrescarTodo
+                ).setVisible(true);
             }
         }
     }
